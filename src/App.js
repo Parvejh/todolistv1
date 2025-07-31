@@ -16,21 +16,39 @@ const App = () => {
       return
     }
 
+    //create a new task 
+    const newTask = {
+      name:taskInput.trim(),
+      isCompleted: false
+    }
+
     //If the task input is not empty , add the new task to the taskArray
-    setTaskArray([...taskArray,taskInput]);
+    setTaskArray([...taskArray,newTask]);
     setTaskInput("")
   }
 
   const completeTaskHandler = (index)=>{
+
+    // if the task is already completed, return
+    if(taskArray[index].isCompleted == true) return;
+
+    // find the task
     const task = taskArray[index];
+
     //using filter methos
     // const updatedArray = taskArray.filter((_, i) => i !== index);
     //using splice method
     // *** while using Splice we need to create a shallow copy of the main array, because if we use splice on the original array, then the reference of the array is not changed & react does not recognize that change, so it will not re-render the page
-    const updatedArray = [...taskArray]
-    updatedArray.splice(index,1);
+    // const updatedArray = [...taskArray]
+    // updatedArray.splice(index,1);
 
-    setTaskArray(updatedArray);
+    // Update the status of the selected task to isComplete=true
+    const updatedArray1 = [...taskArray];
+    updatedArray1[index].isCompleted = true;
+    setTaskArray(updatedArray1)
+
+    // Alternately ,we are not removing the completed task from the array , but marking it as complete
+    // setTaskArray(updatedArray);
   }
   
   return (

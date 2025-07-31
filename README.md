@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# To-Do List React App Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This is a simple To-Do List application built with React. It allows users to:
+- Add new tasks
+- View a list of tasks
+- Delete tasks (mark as completed)
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## File Structure
+- `App.js` - Main component managing state and rendering the UI
+- `Components/TaskItem.js` - Child component representing a single task item
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Key Components and Functionality
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### App Component (`App.js`)
+- Uses React `useState` hooks to manage:
+  - `taskArray` (array of tasks)
+  - `taskInput` (current input text)
 
-### `npm test`
+- **Adding a Task:**
+  - `handleSubmit` is triggered on form submission.
+  - Prevents default form behavior.
+  - Trims whitespace from input.
+  - If input is not empty, adds it to `taskArray`.
+  - Clears the input field after adding.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Deleting (Completing) a Task:**
+  - `completeTaskHandler` receives the index of the task to delete.
+  - Creates a shallow copy of `taskArray` using spread operator (`[...]`).
+  - Uses `splice` to remove the task at the given index from the copied array.
+  - Updates state with the new array to trigger re-render.
 
-### `npm run build`
+- **Rendering:**
+  - Displays a form with an input field and submit button.
+  - Renders a list of `TaskItem` components, passing down the task, its index (`id`), and the `completeTaskHandler` function.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### TaskItem Component (`Components/TaskItem.js`)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Props:
+  - `id` - the index of the task in the list.
+  - `task` - the task text.
+  - `completeTask` - function to delete/complete a task.
 
-### `npm run eject`
+- Renders each task inside an `<li>`.
+- Provides two buttons:
+  - **Done** button calls `completeTask(id)` to delete the task.
+  - **Delete** button can be added similarly for removing tasks if needed.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usage Instructions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Run `npm install` (or `yarn install`) to install dependencies.
+2. Start the app using `npm start` or `yarn start`.
+3. Type your task in the input field and press "Create Task!" to add it.
+4. Click "Done" next to any task to remove it from the list.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## Notes & Best Practices
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- State is updated immutably to ensure React recognizes changes and re-renders UI.
+- `splice` is used safely by operating on a shallow copy of the array to avoid mutating original state.
+- `key` prop in list rendering is important for React to optimize rendering but should not be used as a prop inside child components.
+- Consider using unique IDs for tasks in larger apps to prevent issues with list reordering.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Potential Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Add task editing capability.
+- Mark tasks as completed without deleting.
+- Persist tasks to local storage or backend.
+- Add validation or notification for empty input.
+- Improve accessibility and styling.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Author
 
-### Making a Progressive Web App
+[Parvej Hussain]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
