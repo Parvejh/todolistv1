@@ -6,26 +6,39 @@ const App = () => {
   const[taskArray,setTaskArray] = useState([]);
   const[taskInput,setTaskInput] = useState("");
   const[descInput,setDescInput] = useState("");
+  const[editIndex, setEditIndex] = useState(null);
 
   const handleSubmit = (e)=>{
     //Prevents default behaviour of the form submission
     e.preventDefault();
 
-    //Trim the input whitespaces and return if it is empty
-    if(taskInput.trim()==="") {
-      setTaskInput("")
-      return
+    // If the edit task index is not null
+    if(editIndex !== null){
+      const updatedTaskArray = [...taskArray]
+      updatedTaskArray[editIndex] = {...updatedTaskArray[editIndex],
+        name: taskInput.trim(),
+        description : descInput.trim()
+      }
+      setTaskArray(updatedTaskArray);
+      setEditIndex(null)
     }
-
-    //create a new task 
-    const newTask = {
-      name:taskInput.trim(),
-      description:descInput.trim(),
-      isCompleted: false
+    // Else create a task on submission
+    else{
+      //Trim the input whitespaces and return if it is empty
+      if(taskInput.trim()==="") {
+        setTaskInput("")
+        return
+      }
+      //create a new task 
+      const newTask = {
+        name:taskInput.trim(),
+        description:descInput.trim(),
+        isCompleted: false
+      }
+      setTaskArray([...taskArray,newTask]);
     }
 
     //If the task input is not empty , add the new task to the taskArray
-    setTaskArray([...taskArray,newTask]);
     setTaskInput("")
     setDescInput("")
   }
@@ -40,6 +53,19 @@ const App = () => {
     setTaskArray(updatedArray1)
   }
   
+  const editTaskHandler = (index)=>{
+    // return if the task is already completed
+    if(taskArray[index].isCompleted == true) return
+
+    const task = taskArray[index]
+
+    //set the field inputs to the task data
+    setEditIndex(index);
+    setTaskInput(task.name);
+    setDescInput(task.description);
+
+  }
+
   return (
     <div className='rounded bg-slate-100 h-1/2 w-2/3 m-auto mt-10 px-2 py-5'>
       <h1 className='text-center text-2xl py-2'>To Do List</h1>
@@ -51,7 +77,8 @@ const App = () => {
             value={taskInput} 
             className='border basis-0 flex-1 px-2 py-3 rounded' 
             placeholder='Enter Task to do ...'/>
-            <button className='bg-green-600  text-white px-4 py-3 rounded'>Create Task!</button>
+            <button className='bg-green-600  text-white px-4 py-3 rounded'>
+              {editIndex===null?"Create Task":"Save Changes"}</button>
           </div>
           <input 
             value={descInput}
@@ -65,7 +92,7 @@ const App = () => {
       <div className='px-5 mt-5'>
         <ul>
           {taskArray.map((task, index) => (
-            <TaskItem id={index} key={index} task={task} completeTask={completeTaskHandler} />
+            <TaskItem id={index} key={index} task={task} completeTask={completeTaskHandler} editTask={editTaskHandler} />
           ))}
         </ul>
       </div>

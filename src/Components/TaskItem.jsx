@@ -1,17 +1,22 @@
 import React from 'react'
 
-const TaskItem = ({id,task,completeTask}) => {
+const TaskItem = ({id,task,completeTask, editTask}) => {
   return (
     <>
       <li className='flex items-center justify-between  mb-3 bg-slate-200 px-2 py-2 rounded'> 
         <div className={`${(task.isCompleted==true)?"line-through text-red-400":""}`}>
-            <h4 className="w-2/3 text-xl">{task.name}</h4>
+            <h4 className="w-2/3 text-xl whitespace-nowrap">{task.name}</h4>
             <h3 className='text-sm opacity-50'>
               {task.description}
             </h3>
         </div>
-            <button onClick={()=>completeTask(id)} className='bg-green-400 px-2 py-1 rounded hover:bg-green-500'>Done</button>
-          </li> 
+        <div className='flex gap-2'>
+          <button onClick={()=>editTask(id)} className='bg-purple-400 rounded px-2 py-1 hover:bg-purple-500'> 
+            Edit
+          </button>
+          <button onClick={()=>completeTask(id)} className='bg-green-400 px-2 py-1 rounded hover:bg-green-500'>Done</button>
+        </div>
+        </li> 
     </>
   )
 }
